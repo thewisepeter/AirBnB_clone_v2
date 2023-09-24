@@ -8,12 +8,6 @@ from models.state import State
 app = Flask(__name__)
 
 
-@app.teardown_appcontext
-def teardown(self):
-    """ Removes current SQLAlchemy Session """
-    storage.close()
-
-
 @app.route("/states", strict_slashes=False)
 def states():
     """Displays html with States """
@@ -28,6 +22,12 @@ def states_by_id(id):
         if state.id == id:
             return render_template('9-states.html', states=state, mode='id')
     return render_template('9-states.html', states=state, mode='none')
+
+
+@app.teardown_appcontext
+def teardown(self):
+    """ Removes current SQLAlchemy Session """
+    storage.close()
 
 
 if __name__ == "__main__":
